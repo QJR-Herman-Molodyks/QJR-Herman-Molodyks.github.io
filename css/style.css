@@ -1,0 +1,180 @@
+
+body{
+    background-color: dimgrey;
+    scroll-behavior: smooth;
+}
+
+.container{
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+header{
+    /*font-size: 42px;*/
+    /*font-family: Arial, sans-serif;*/
+    .container{
+        background-color: #2b2b2b;
+        border-radius: 15px;
+
+        /*max-width: 1000px;*/
+        margin: 0 auto;
+        /*padding: 20px;*/
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .logo{
+            color: white;
+            font-size: 42px;
+            /*font-family: Arial, sans-serif;*/
+            margin-left: 10px;
+        }
+        nav{
+            width: 60%;
+            /*padding-top: 15px;*/
+            ul{
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+
+            color: white;
+            justify-content: space-between;
+            }
+            li{
+                a{
+                    text-decoration: none;
+                    color: white;
+                    font-size: 16px;
+
+                    font-family: Arial, sans-serif;
+                    &:hover{
+                        color: orange;
+                    }
+                }
+        }}
+        .hire-me{            &:active{
+            /*background-color: #2b2b2b;*/
+            color: orange;
+            border: 1px solid orange;
+        }
+            input{
+                padding: 10px 18px;
+                border-radius: 5px;
+                /*margin-top: 6px;*/
+                background-color: orange;
+                color: white;
+                border: none;
+                margin-right: 10px;
+                &:active{
+                    background-color: #2b2b2b;
+                    color: orange;
+                    border: 1px solid orange;
+                }
+            }
+        }
+
+
+
+    }
+}
+
+main {
+    .me {
+        background-color: black;
+        font-family: Arial, sans-serif;
+        color: white;
+        margin-top: 20px;
+        padding: 20px;
+        border-radius: 15px;
+
+        .greeting {
+            font-size: 20px;
+            /*font-weight: bold;*/
+        }
+
+        .name {
+            color: orange;
+            font-size: 30px;
+        }
+
+        .prof {
+            margin-top: 50px;
+            color: white;
+            font-size: 34px;
+
+            h6 {
+            }
+        }
+    }
+
+    .my_skills {
+        h1{
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            text-align: center;
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 15px;
+            background-color: black;
+            color: white;
+            max-width: 500px;
+            gap: 10px;
+            /*padding-left: 20px;*/
+
+            .label{
+                font-family: Arial, sans-serif;
+                font-size: 14px;
+            }
+            .skill {
+                background-color: orange;
+                border-radius: 10px;
+                width: 100px;
+                height: 100px;
+                padding: 10px;
+                margin: 10px;
+                box-sizing: border-box;
+                &:hover{
+                    background-color: dimgrey;
+                }
+            }
+        }
+    }
+}
+
+.services{
+    background-color: black;
+    margin-top: 20px;
+    color: white;
+    padding: 20px;
+    border-radius: 15px;
+    font-family: Arial, sans-serif;
+    a{
+        color: orange;
+        text-decoration: none;
+        &:hover{
+            color: white;
+        }
+    }
+    }
+
+.blog{
+    background-color: black;
+    margin-top: 10px;
+    color: white;
+    padding: 20px;
+    border-radius: 15px;
+    font-family: Arial, sans-serif;
+    a{
+        color: orange;
+        text-decoration: none;
+        &:hover{
+            color: white;
+        }
+    }
+}
+
