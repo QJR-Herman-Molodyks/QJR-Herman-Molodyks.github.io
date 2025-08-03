@@ -1,7 +1,10 @@
 
+html{
+    scroll-behavior: smooth;
+}
+
 body{
     background-color: dimgrey;
-    scroll-behavior: smooth;
 }
 
 .container{
@@ -178,3 +181,33 @@ main {
     }
 }
 
+footer{
+    .blog{
+        background-color: black;
+        margin-top: 10px;
+        color: white;
+        padding: 20px;
+        border-radius: 15px;
+        font-family: Arial, sans-serif;
+        a{
+            color: orange;
+            text-decoration: none;
+            &:hover{
+                color: white;
+            }
+        }
+    }
+    .contact-me{
+        background-color: black;
+        margin-top: 10px;
+        color: white;
+        padding: 20px;
+        border-radius: 15px;
+        font-family: Arial, sans-serif;
+        a{
+            color: orange;
+            text-decoration: none;
+            &:hover{}
+        }
+    }
+}
