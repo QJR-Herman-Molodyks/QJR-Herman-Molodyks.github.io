@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>The Secret Web</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<h1>The Secret Web!</h1>
+<hr>
+
+<div class="titleukr">
+    Для входу у систему Вам необхідно ввести Ключ-Пароль
+    <a href="help-ukr.html">Допомога/Докладніше</a>
+</div>
+<div class="titleeng">
+    For logging in the system you need to write Key-Password!
+    <a href="help-eng.html">Help/More</a>
+</div>
+
+<div class="input-group">
+    <input type="text" id="key" name="key" placeholder="Key-Password">
+    <input type="submit" value="Login" onclick="login()">
+</div>
+
+<script>
+    function login() {
+        let key = document.getElementById("key").value;
+
+
+        if (key === "12345") {
+
+            // window.location.href = "QJR-Herman-Molodyks.github.io/Secret_Web_1/web/gs_12345.html";
+            window.location.href = "./web/gs_12345.html";
+        } else {
+            document.getElementById("show").innerText = "Access denied! / Доступ заборонено!"
+        }
+    }
+</script>
+
+</body>
+
+
+</html>

@@ -1,0 +1,1253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title><!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Windows 10</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+            user-select: none;
+        }
+
+        #desktop {
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            position: relative;
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080"><rect fill="%23667eea" width="1920" height="1080"/><path fill="%23764ba2" d="M0 0h1920v1080H0z" opacity="0.3"/></svg>');
+            background-size: cover;
+        }
+
+        .desktop-icon {
+            width: 80px;
+            padding: 8px;
+            text-align: center;
+            color: white;
+            cursor: pointer;
+            position: absolute;
+            border-radius: 4px;
+        }
+
+        .desktop-icon:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .icon-img {
+            width: 48px;
+            height: 48px;
+            background: rgba(255, 255, 255, 0.9);
+            margin: 0 auto 5px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .icon-label {
+            font-size: 12px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+        }
+
+        #taskbar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 40px;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            padding: 0 4px;
+            z-index: 1000;
+        }
+
+        #start-button {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 20px;
+            color: white;
+        }
+
+        #start-button:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .taskbar-app {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            margin: 0 2px;
+            background: rgba(255, 255, 255, 0.1);
+            border-bottom: 2px solid transparent;
+        }
+
+        .taskbar-app:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .taskbar-app.active {
+            background: rgba(255, 255, 255, 0.2);
+            border-bottom-color: #0078d4;
+        }
+
+        #system-tray {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 0 10px;
+            color: white;
+            font-size: 12px;
+        }
+
+        .tray-icon {
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 2px;
+        }
+
+        .tray-icon:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        #start-menu {
+            position: absolute;
+            bottom: 40px;
+            left: 0;
+            width: 600px;
+            height: 600px;
+            background: rgba(30, 30, 30, 0.95);
+            backdrop-filter: blur(20px);
+            display: none;
+            flex-direction: column;
+            color: white;
+            border-radius: 8px 8px 0 0;
+        }
+
+        #start-menu.show {
+            display: flex;
+        }
+
+        .start-header {
+            padding: 20px;
+            font-size: 14px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .start-apps {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            align-content: start;
+        }
+
+        .start-tile {
+            aspect-ratio: 1;
+            background: rgba(0, 120, 212, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 14px;
+            border-radius: 4px;
+            transition: transform 0.2s;
+        }
+
+        .start-tile:hover {
+            transform: scale(1.05);
+            background: rgba(0, 120, 212, 1);
+        }
+
+        .window {
+            position: absolute;
+            background: white;
+            border-radius: 8px 8px 0 0;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            min-width: 400px;
+            min-height: 300px;
+            display: none;
+            flex-direction: column;
+            resize: both;
+            overflow: hidden;
+        }
+
+        .window.show {
+            display: flex;
+        }
+
+        .window.maximized {
+            top: 0 !important;
+            left: 0 !important;
+            width: 100vw !important;
+            height: calc(100vh - 40px) !important;
+            border-radius: 0;
+        }
+
+        .window-titlebar {
+            height: 32px;
+            background: white;
+            display: flex;
+            align-items: center;
+            padding: 0 10px;
+            cursor: move;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .window-title {
+            flex: 1;
+            font-size: 12px;
+            color: #333;
+        }
+
+        .window-controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .window-btn {
+            width: 46px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .window-btn:hover {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .window-btn.close:hover {
+            background: #e81123;
+            color: white;
+        }
+
+        .window-content {
+            flex: 1;
+            padding: 0;
+            overflow: auto;
+            background: white;
+        }
+
+        .time {
+            text-align: center;
+            line-height: 1.2;
+        }
+
+        /* Calculator Styles */
+        .calculator {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            background: #f3f3f3;
+            padding: 10px;
+        }
+
+        .calc-display {
+            background: white;
+            padding: 20px;
+            text-align: right;
+            font-size: 32px;
+            border: 1px solid #ddd;
+            margin-bottom: 10px;
+            min-height: 80px;
+            word-wrap: break-word;
+        }
+
+        .calc-buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 5px;
+            flex: 1;
+        }
+
+        .calc-btn {
+            background: white;
+            border: 1px solid #ddd;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .calc-btn:hover {
+            background: #e0e0e0;
+        }
+
+        .calc-btn:active {
+            background: #d0d0d0;
+        }
+
+        .calc-btn.operator {
+            background: #f0f0f0;
+        }
+
+        .calc-btn.equals {
+            background: #0078d4;
+            color: white;
+        }
+
+        .calc-btn.equals:hover {
+            background: #006cc1;
+        }
+
+        /* File Explorer Styles */
+        .explorer {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .explorer-toolbar {
+            display: flex;
+            align-items: center;
+            padding: 5px 10px;
+            background: #f8f8f8;
+            border-bottom: 1px solid #ddd;
+            gap: 10px;
+        }
+
+        .explorer-nav-btn {
+            padding: 5px 10px;
+            background: white;
+            border: 1px solid #ddd;
+            cursor: pointer;
+            border-radius: 2px;
+        }
+
+        .explorer-nav-btn:hover {
+            background: #e8e8e8;
+        }
+
+        .explorer-nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .explorer-address-bar {
+            flex: 1;
+            padding: 5px 10px;
+            border: 1px solid #ddd;
+            border-radius: 2px;
+            background: white;
+        }
+
+        .explorer-content {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+
+        .explorer-sidebar {
+            width: 200px;
+            background: #f8f8f8;
+            border-right: 1px solid #ddd;
+            padding: 10px;
+            overflow-y: auto;
+        }
+
+        .sidebar-item {
+            padding: 8px;
+            cursor: pointer;
+            border-radius: 2px;
+            margin-bottom: 2px;
+        }
+
+        .sidebar-item:hover {
+            background: #e8e8e8;
+        }
+
+        .sidebar-item.active {
+            background: #0078d4;
+            color: white;
+        }
+
+        .explorer-main {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .file-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 20px;
+        }
+
+        .file-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 4px;
+        }
+
+        .file-item:hover {
+            background: #f0f0f0;
+        }
+
+        .file-item.selected {
+            background: #cce8ff;
+        }
+
+        .file-icon {
+            font-size: 48px;
+            margin-bottom: 8px;
+        }
+
+        .file-name {
+            font-size: 12px;
+            text-align: center;
+            word-wrap: break-word;
+            max-width: 100%;
+        }
+
+        .context-menu {
+            position: fixed;
+            background: white;
+            border: 1px solid #ddd;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            border-radius: 4px;
+            padding: 5px 0;
+            z-index: 10000;
+            display: none;
+        }
+
+        .context-menu.show {
+            display: block;
+        }
+
+        .context-menu-item {
+            padding: 8px 30px 8px 15px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .context-menu-item:hover {
+            background: #0078d4;
+            color: white;
+        }
+
+        .context-menu-divider {
+            height: 1px;
+            background: #ddd;
+            margin: 5px 0;
+        }
+
+        .file-list-view {
+            width: 100%;
+        }
+
+        .file-list-item {
+            display: flex;
+            align-items: center;
+            padding: 8px;
+            border-bottom: 1px solid #f0f0f0;
+            cursor: pointer;
+        }
+
+        .file-list-item:hover {
+            background: #f8f8f8;
+        }
+
+        .file-list-item.selected {
+            background: #cce8ff;
+        }
+
+        .file-list-icon {
+            font-size: 24px;
+            margin-right: 10px;
+        }
+
+        .file-list-details {
+            flex: 1;
+            display: flex;
+            gap: 20px;
+        }
+
+        .view-toggle {
+            padding: 5px 10px;
+            background: white;
+            border: 1px solid #ddd;
+            cursor: pointer;
+            border-radius: 2px;
+        }
+
+        .view-toggle.active {
+            background: #0078d4;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div id="desktop">
+        <div class="desktop-icon" style="top: 20px; left: 20px;" data-app="browser">
+            <div class="icon-img">🌐</div>
+            <div class="icon-label">Браузер</div>
+        </div>
+        <div class="desktop-icon" style="top: 20px; left: 120px;" data-app="files">
+            <div class="icon-img">📁</div>
+            <div class="icon-label">Файли</div>
+        </div>
+        <div class="desktop-icon" style="top: 20px; left: 220px;" data-app="notepad">
+            <div class="icon-img">📝</div>
+            <div class="icon-label">Блокнот</div>
+        </div>
+        <div class="desktop-icon" style="top: 120px; left: 20px;" data-app="calculator">
+            <div class="icon-img">🔢</div>
+            <div class="icon-label">Калькулятор</div>
+        </div>
+    </div>
+
+    <div id="taskbar">
+        <div id="start-button">⊞</div>
+        <div id="taskbar-apps"></div>
+        <div id="system-tray">
+            <div class="tray-icon">🔊</div>
+            <div class="tray-icon">📶</div>
+            <div class="time">
+                <div id="time-display">12:00</div>
+                <div id="date-display">28.10.2025</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="start-menu">
+        <div class="start-header">Всі програми</div>
+        <div class="start-apps">
+            <div class="start-tile" data-app="browser">🌐<br>Браузер</div>
+            <div class="start-tile" data-app="files">📁<br>Файли</div>
+            <div class="start-tile" data-app="notepad">📝<br>Блокнот</div>
+            <div class="start-tile" data-app="calculator">🔢<br>Калькулятор</div>
+            <div class="start-tile" data-app="settings">⚙️<br>Налаштування</div>
+            <div class="start-tile" data-app="store">🛍️<br>Магазин</div>
+        </div>
+    </div>
+
+    <div id="context-menu" class="context-menu">
+        <div class="context-menu-item" data-action="open">Відкрити</div>
+        <div class="context-menu-item" data-action="rename">Перейменувати</div>
+        <div class="context-menu-item" data-action="delete">Видалити</div>
+        <div class="context-menu-divider"></div>
+        <div class="context-menu-item" data-action="properties">Властивості</div>
+    </div>
+
+    <div id="windows"></div>
+
+    <script>
+        // File System
+        const fileSystem = {
+            'Цей комп\'ютер': {
+                type: 'root',
+                children: {
+                    'Диск C:': {
+                        type: 'drive',
+                        children: {
+                            'Користувачі': {
+                                type: 'folder',
+                                children: {
+                                    'Документи': { type: 'folder', children: {
+                                        'Звіт.docx': { type: 'file', size: '45 КБ', date: '15.10.2025' },
+                                        'Презентація.pptx': { type: 'file', size: '2.3 МБ', date: '20.10.2025' }
+                                    }},
+                                    'Зображення': { type: 'folder', children: {
+                                        'Фото1.jpg': { type: 'file', size: '1.2 МБ', date: '10.10.2025' },
+                                        'Фото2.jpg': { type: 'file', size: '980 КБ', date: '11.10.2025' }
+                                    }},
+                                    'Завантаження': { type: 'folder', children: {
+                                        'setup.exe': { type: 'file', size: '15 МБ', date: '25.10.2025' }
+                                    }},
+                                    'Музика': { type: 'folder', children: {} },
+                                    'Відео': { type: 'folder', children: {} }
+                                }
+                            },
+                            'Program Files': {
+                                type: 'folder',
+                                children: {
+                                    'Windows': { type: 'folder', children: {} },
+                                    'Common Files': { type: 'folder', children: {} }
+                                }
+                            }
+                        }
+                    },
+                    'Диск D:': {
+                        type: 'drive',
+                        children: {
+                            'Ігри': { type: 'folder', children: {} },
+                            'Проекти': { type: 'folder', children: {} }
+                        }
+                    }
+                }
+            },
+            'Швидкий доступ': {
+                type: 'quick',
+                children: {
+                    'Робочий стіл': { type: 'folder', children: {} },
+                    'Документи': { type: 'folder', children: {} },
+                    'Завантаження': { type: 'folder', children: {} }
+                }
+            }
+        };
+
+        let currentPath = ['Цей комп\'ютер'];
+        let fileHistory = [];
+        let historyIndex = -1;
+        let selectedFile = null;
+        let viewMode = 'grid'; // 'grid' or 'list'
+
+        const apps = {
+            browser: { 
+                title: 'Microsoft Edge', 
+                content: '<div style="padding:20px;"><h2>Ласкаво просимо до браузера</h2><p>Швидкий і безпечний веб-браузер.</p></div>' 
+            },
+            files: { 
+                title: 'Провідник', 
+                content: createFileExplorer(),
+                onOpen: initFileExplorer
+            },
+            notepad: { 
+                title: 'Блокнот', 
+                content: '<textarea style="width:100%;height:100%;border:none;font-family:Consolas;resize:none;padding:10px;">Введіть текст тут...</textarea>' 
+            },
+            calculator: { 
+                title: 'Калькулятор', 
+                content: createCalculator(),
+                onOpen: initCalculator
+            },
+            settings: { 
+                title: 'Налаштування', 
+                content: '<div style="padding:20px;"><h2>Налаштування Windows</h2><p>⚙️ Система</p><p>🎨 Персоналізація</p><p>🔒 Конфіденційність</p></div>' 
+            },
+            store: { 
+                title: 'Microsoft Store', 
+                content: '<div style="padding:20px;"><h2>Microsoft Store</h2><p>Знаходьте та встановлюйте програми.</p></div>' 
+            }
+        };
+
+        function createCalculator() {
+            return `
+                <div class="calculator">
+                    <div class="calc-display" id="calc-display">0</div>
+                    <div class="calc-buttons">
+                        <button class="calc-btn" data-action="clear">C</button>
+                        <button class="calc-btn" data-action="sign">±</button>
+                        <button class="calc-btn" data-action="percent">%</button>
+                        <button class="calc-btn operator" data-action="divide">÷</button>
+                        
+                        <button class="calc-btn" data-action="number" data-value="7">7</button>
+                        <button class="calc-btn" data-action="number" data-value="8">8</button>
+                        <button class="calc-btn" data-action="number" data-value="9">9</button>
+                        <button class="calc-btn operator" data-action="multiply">×</button>
+                        
+                        <button class="calc-btn" data-action="number" data-value="4">4</button>
+                        <button class="calc-btn" data-action="number" data-value="5">5</button>
+                        <button class="calc-btn" data-action="number" data-value="6">6</button>
+                        <button class="calc-btn operator" data-action="subtract">−</button>
+                        
+                        <button class="calc-btn" data-action="number" data-value="1">1</button>
+                        <button class="calc-btn" data-action="number" data-value="2">2</button>
+                        <button class="calc-btn" data-action="number" data-value="3">3</button>
+                        <button class="calc-btn operator" data-action="add">+</button>
+                        
+                        <button class="calc-btn" data-action="number" data-value="0" style="grid-column: span 2;">0</button>
+                        <button class="calc-btn" data-action="decimal">.</button>
+                        <button class="calc-btn equals" data-action="equals">=</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function initCalculator(win) {
+            let currentValue = '0';
+            let previousValue = null;
+            let operation = null;
+            let shouldResetDisplay = false;
+
+            const display = win.querySelector('#calc-display');
+            const buttons = win.querySelectorAll('.calc-btn');
+
+            function updateDisplay(value) {
+                display.textContent = value;
+            }
+
+            buttons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const action = btn.dataset.action;
+                    const value = btn.dataset.value;
+
+                    if (action === 'number') {
+                        if (shouldResetDisplay || currentValue === '0') {
+                            currentValue = value;
+                            shouldResetDisplay = false;
+                        } else {
+                            currentValue += value;
+                        }
+                        updateDisplay(currentValue);
+                    }
+                    else if (action === 'decimal') {
+                        if (!currentValue.includes('.')) {
+                            currentValue += '.';
+                            updateDisplay(currentValue);
+                        }
+                    }
+                    else if (action === 'clear') {
+                        currentValue = '0';
+                        previousValue = null;
+                        operation = null;
+                        updateDisplay(currentValue);
+                    }
+                    else if (action === 'sign') {
+                        currentValue = String(parseFloat(currentValue) * -1);
+                        updateDisplay(currentValue);
+                    }
+                    else if (action === 'percent') {
+                        currentValue = String(parseFloat(currentValue) / 100);
+                        updateDisplay(currentValue);
+                    }
+                    else if (['add', 'subtract', 'multiply', 'divide'].includes(action)) {
+                        if (previousValue !== null && operation && !shouldResetDisplay) {
+                            calculate();
+                        }
+                        previousValue = parseFloat(currentValue);
+                        operation = action;
+                        shouldResetDisplay = true;
+                    }
+                    else if (action === 'equals') {
+                        calculate();
+                    }
+                });
+            });
+
+            function calculate() {
+                if (previousValue === null || operation === null) return;
+
+                const current = parseFloat(currentValue);
+                let result;
+
+                switch(operation) {
+                    case 'add':
+                        result = previousValue + current;
+                        break;
+                    case 'subtract':
+                        result = previousValue - current;
+                        break;
+                    case 'multiply':
+                        result = previousValue * current;
+                        break;
+                    case 'divide':
+                        result = current !== 0 ? previousValue / current : 'Помилка';
+                        break;
+                }
+
+                currentValue = String(result);
+                updateDisplay(currentValue);
+                previousValue = null;
+                operation = null;
+                shouldResetDisplay = true;
+            }
+        }
+
+        function createFileExplorer() {
+            return `
+                <div class="explorer">
+                    <div class="explorer-toolbar">
+                        <button class="explorer-nav-btn" id="nav-back">◀</button>
+                        <button class="explorer-nav-btn" id="nav-forward">▶</button>
+                        <button class="explorer-nav-btn" id="nav-up">⬆</button>
+                        <input type="text" class="explorer-address-bar" id="address-bar" readonly>
+                        <button class="view-toggle" id="view-grid">⊞</button>
+                        <button class="view-toggle" id="view-list">☰</button>
+                    </div>
+                    <div class="explorer-content">
+                        <div class="explorer-sidebar" id="explorer-sidebar"></div>
+                        <div class="explorer-main" id="explorer-main"></div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function initFileExplorer(win) {
+            const sidebar = win.querySelector('#explorer-sidebar');
+            const main = win.querySelector('#explorer-main');
+            const addressBar = win.querySelector('#address-bar');
+            const navBack = win.querySelector('#nav-back');
+            const navForward = win.querySelector('#nav-forward');
+            const navUp = win.querySelector('#nav-up');
+            const viewGrid = win.querySelector('#view-grid');
+            const viewList = win.querySelector('#view-list');
+            const contextMenu = document.getElementById('context-menu');
+
+            function renderSidebar() {
+                sidebar.innerHTML = '';
+                Object.keys(fileSystem).forEach(key => {
+                    const item = document.createElement('div');
+                    item.className = 'sidebar-item';
+                    if (currentPath[0] === key) item.classList.add('active');
+                    item.textContent = key;
+                    item.addEventListener('click', () => {
+                        navigateTo([key]);
+                    });
+                    sidebar.appendChild(item);
+                });
+            }
+
+            function getCurrentFolder() {
+                let current = fileSystem;
+                for (let segment of currentPath) {
+                    current = current[segment];
+                    if (current.children) current = current.children;
+                }
+                return current;
+            }
+
+            function renderFiles() {
+                main.innerHTML = '';
+                const folder = getCurrentFolder();
+                
+                if (!folder || !folder.children) return;
+
+                if (viewMode === 'grid') {
+                    const grid = document.createElement('div');
+                    grid.className = 'file-grid';
+                    
+                    Object.keys(folder.children).forEach(name => {
+                        const item = folder.children[name];
+                        const fileEl = document.createElement('div');
+                        fileEl.className = 'file-item';
+                        fileEl.dataset.name = name;
+                        
+                        const icon = item.type === 'folder' || item.type === 'drive' ? '📁' : 
+                                    name.endsWith('.txt') ? '📄' :
+                                    name.endsWith('.jpg') || name.endsWith('.png') ? '🖼️' :
+                                    name.endsWith('.exe') ? '⚙️' :
+                                    name.endsWith('.docx') ? '📝' :
+                                    name.endsWith('.pptx') ? '📊' : '📄';
+                        
+                        fileEl.innerHTML = `
+                            <div class="file-icon">${icon}</div>
+                            <div class="file-name">${name}</div>
+                        `;
+                        
+                        fileEl.addEventListener('click', () => selectFile(fileEl, name, item));
+                        fileEl.addEventListener('dblclick', () => openFile(name, item));
+                        fileEl.addEventListener('contextmenu', (e) => {
+                            e.preventDefault();
+                            showContextMenu(e, name, item);
+                        });
+                        
+                        list.appendChild(fileEl);
+                    });
+                    
+                    main.appendChild(list);
+                }
+            }
+
+            function selectFile(fileEl, name, item) {
+                const selected = main.querySelector('.selected');
+                if (selected) selected.classList.remove('selected');
+                fileEl.classList.add('selected');
+                selectedFile = { name, item };
+            }
+
+            function openFile(name, item) {
+                if (item.type === 'folder' || item.type === 'drive') {
+                    navigateTo([...currentPath, name]);
+                }
+            }
+
+            function showContextMenu(e, name, item) {
+                contextMenu.style.left = e.pageX + 'px';
+                contextMenu.style.top = e.pageY + 'px';
+                contextMenu.classList.add('show');
+                
+                contextMenu.onclick = (evt) => {
+                    const action = evt.target.dataset.action;
+                    if (action === 'delete') {
+                        if (confirm(`Видалити "${name}"?`)) {
+                            const folder = getCurrentFolder();
+                            delete folder.children[name];
+                            renderFiles();
+                        }
+                    } else if (action === 'rename') {
+                        const newName = prompt('Нова назва:', name);
+                        if (newName && newName !== name) {
+                            const folder = getCurrentFolder();
+                            folder.children[newName] = folder.children[name];
+                            delete folder.children[name];
+                            renderFiles();
+                        }
+                    } else if (action === 'open') {
+                        openFile(name, item);
+                    }
+                    contextMenu.classList.remove('show');
+                };
+            }
+
+            function navigateTo(path) {
+                fileHistory = fileHistory.slice(0, historyIndex + 1);
+                fileHistory.push([...currentPath]);
+                historyIndex = fileHistory.length - 1;
+                
+                currentPath = path;
+                addressBar.value = currentPath.join(' > ');
+                renderSidebar();
+                renderFiles();
+                updateNavButtons();
+            }
+
+            function updateNavButtons() {
+                navBack.disabled = historyIndex <= 0;
+                navForward.disabled = historyIndex >= fileHistory.length - 1;
+                navUp.disabled = currentPath.length <= 1;
+            }
+
+            navBack.addEventListener('click', () => {
+                if (historyIndex > 0) {
+                    historyIndex--;
+                    currentPath = [...fileHistory[historyIndex]];
+                    addressBar.value = currentPath.join(' > ');
+                    renderSidebar();
+                    renderFiles();
+                    updateNavButtons();
+                }
+            });
+
+            navForward.addEventListener('click', () => {
+                if (historyIndex < fileHistory.length - 1) {
+                    historyIndex++;
+                    currentPath = [...fileHistory[historyIndex]];
+                    addressBar.value = currentPath.join(' > ');
+                    renderSidebar();
+                    renderFiles();
+                    updateNavButtons();
+                }
+            });
+
+            navUp.addEventListener('click', () => {
+                if (currentPath.length > 1) {
+                    navigateTo(currentPath.slice(0, -1));
+                }
+            });
+
+            viewGrid.addEventListener('click', () => {
+                viewMode = 'grid';
+                viewGrid.classList.add('active');
+                viewList.classList.remove('active');
+                renderFiles();
+            });
+
+            viewList.addEventListener('click', () => {
+                viewMode = 'list';
+                viewList.classList.add('active');
+                viewGrid.classList.remove('active');
+                renderFiles();
+            });
+
+            main.addEventListener('click', (e) => {
+                if (e.target === main) {
+                    const selected = main.querySelector('.selected');
+                    if (selected) selected.classList.remove('selected');
+                    selectedFile = null;
+                }
+            });
+
+            main.addEventListener('contextmenu', (e) => {
+                if (e.target === main) {
+                    e.preventDefault();
+                    const menu = document.createElement('div');
+                    menu.className = 'context-menu show';
+                    menu.style.left = e.pageX + 'px';
+                    menu.style.top = e.pageY + 'px';
+                    menu.innerHTML = `
+                        <div class="context-menu-item" data-action="new-folder">Створити папку</div>
+                        <div class="context-menu-item" data-action="new-file">Створити файл</div>
+                    `;
+                    document.body.appendChild(menu);
+                    
+                    menu.onclick = (evt) => {
+                        const action = evt.target.dataset.action;
+                        if (action === 'new-folder') {
+                            const name = prompt('Назва папки:');
+                            if (name) {
+                                const folder = getCurrentFolder();
+                                if (!folder.children) folder.children = {};
+                                folder.children[name] = { type: 'folder', children: {} };
+                                renderFiles();
+                            }
+                        } else if (action === 'new-file') {
+                            const name = prompt('Назва файлу:');
+                            if (name) {
+                                const folder = getCurrentFolder();
+                                if (!folder.children) folder.children = {};
+                                folder.children[name] = { type: 'file', size: '0 КБ', date: new Date().toLocaleDateString('uk-UA') };
+                                renderFiles();
+                            }
+                        }
+                        menu.remove();
+                    };
+                    
+                    setTimeout(() => {
+                        const removeMenu = () => {
+                            menu.remove();
+                            document.removeEventListener('click', removeMenu);
+                        };
+                        document.addEventListener('click', removeMenu);
+                    }, 100);
+                }
+            });
+
+            viewGrid.classList.add('active');
+            fileHistory.push([...currentPath]);
+            historyIndex = 0;
+            addressBar.value = currentPath.join(' > ');
+            renderSidebar();
+            renderFiles();
+            updateNavButtons();
+        }
+
+        let windows = {};
+        let zIndexCounter = 100;
+        let activeWindow = null;
+
+        const startButton = document.getElementById('start-button');
+        const startMenu = document.getElementById('start-menu');
+        const desktop = document.getElementById('desktop');
+        const windowsContainer = document.getElementById('windows');
+        const taskbarApps = document.getElementById('taskbar-apps');
+        const contextMenu = document.getElementById('context-menu');
+
+        startButton.addEventListener('click', () => {
+            startMenu.classList.toggle('show');
+        });
+
+        desktop.addEventListener('click', (e) => {
+            if (e.target === desktop) {
+                startMenu.classList.remove('show');
+                contextMenu.classList.remove('show');
+            }
+        });
+
+        document.addEventListener('click', () => {
+            contextMenu.classList.remove('show');
+        });
+
+        document.querySelectorAll('[data-app]').forEach(el => {
+            el.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const appName = el.dataset.app;
+                openWindow(appName);
+                startMenu.classList.remove('show');
+            });
+        });
+
+        function openWindow(appName) {
+            if (windows[appName]) {
+                focusWindow(appName);
+                return;
+            }
+
+            const app = apps[appName];
+            const win = document.createElement('div');
+            win.className = 'window show';
+            win.style.top = `${50 + Object.keys(windows).length * 30}px`;
+            win.style.left = `${100 + Object.keys(windows).length * 30}px`;
+            win.style.width = appName === 'calculator' ? '320px' : '800px';
+            win.style.height = appName === 'calculator' ? '480px' : '600px';
+            win.style.zIndex = ++zIndexCounter;
+
+            win.innerHTML = `
+                <div class="window-titlebar">
+                    <div class="window-title">${app.title}</div>
+                    <div class="window-controls">
+                        <div class="window-btn minimize">−</div>
+                        <div class="window-btn maximize">□</div>
+                        <div class="window-btn close">×</div>
+                    </div>
+                </div>
+                <div class="window-content">${app.content}</div>
+            `;
+
+            windowsContainer.appendChild(win);
+            windows[appName] = win;
+            activeWindow = appName;
+
+            addTaskbarApp(appName);
+            setupWindowControls(win, appName);
+            makeDraggable(win);
+
+            if (app.onOpen) {
+                app.onOpen(win);
+            }
+        }
+
+        function setupWindowControls(win, appName) {
+            const minimize = win.querySelector('.minimize');
+            const maximize = win.querySelector('.maximize');
+            const close = win.querySelector('.close');
+
+            minimize.addEventListener('click', () => {
+                win.classList.remove('show');
+                updateTaskbar();
+            });
+
+            maximize.addEventListener('click', () => {
+                win.classList.toggle('maximized');
+            });
+
+            close.addEventListener('click', () => {
+                win.remove();
+                delete windows[appName];
+                removeTaskbarApp(appName);
+                activeWindow = null;
+            });
+
+            win.addEventListener('mousedown', () => {
+                focusWindow(appName);
+            });
+        }
+
+        function focusWindow(appName) {
+            const win = windows[appName];
+            if (!win) return;
+            
+            win.style.zIndex = ++zIndexCounter;
+            win.classList.add('show');
+            activeWindow = appName;
+            updateTaskbar();
+        }
+
+        function makeDraggable(win) {
+            const titlebar = win.querySelector('.window-titlebar');
+            let isDragging = false;
+            let currentX, currentY, initialX, initialY;
+
+            titlebar.addEventListener('mousedown', (e) => {
+                if (e.target.classList.contains('window-btn')) return;
+                if (win.classList.contains('maximized')) return;
+
+                isDragging = true;
+                initialX = e.clientX - win.offsetLeft;
+                initialY = e.clientY - win.offsetTop;
+            });
+
+            document.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+                e.preventDefault();
+                currentX = e.clientX - initialX;
+                currentY = e.clientY - initialY;
+                win.style.left = currentX + 'px';
+                win.style.top = currentY + 'px';
+            });
+
+            document.addEventListener('mouseup', () => {
+                isDragging = false;
+            });
+        }
+
+        function addTaskbarApp(appName) {
+            const taskbarApp = document.createElement('div');
+            taskbarApp.className = 'taskbar-app active';
+            taskbarApp.dataset.app = appName;
+            taskbarApp.innerHTML = apps[appName].title.charAt(0);
+            taskbarApp.addEventListener('click', () => {
+                if (windows[appName].classList.contains('show') && activeWindow === appName) {
+                    windows[appName].classList.remove('show');
+                } else {
+                    focusWindow(appName);
+                }
+                updateTaskbar();
+            });
+            taskbarApps.appendChild(taskbarApp);
+        }
+
+        function removeTaskbarApp(appName) {
+            const taskbarApp = taskbarApps.querySelector(`[data-app="${appName}"]`);
+            if (taskbarApp) taskbarApp.remove();
+        }
+
+        function updateTaskbar() {
+            document.querySelectorAll('.taskbar-app').forEach(app => {
+                const appName = app.dataset.app;
+                if (windows[appName] && windows[appName].classList.contains('show')) {
+                    app.classList.add('active');
+                } else {
+                    app.classList.remove('active');
+                }
+            });
+        }
+
+        function updateTime() {
+            const now = new Date();
+            const time = now.toLocaleTimeString('uk-UA', { hour: '2-digit', minute: '2-digit' });
+            const date = now.toLocaleDateString('uk-UA', { day: '2-digit', month: '2-digit', year: 'numeric' });
+            document.getElementById('time-display').textContent = time;
+            document.getElementById('date-display').textContent = date;
+        }
+
+        updateTime();
+        setInterval(updateTime, 1000);
+    </script>
+</body>
+</html> item));
+                        fileEl.addEventListener('dblclick', () => openFile(name, item));
+                        fileEl.addEventListener('contextmenu', (e) => {
+                            e.preventDefault();
+                            showContextMenu(e, name, item);
+                        });
+                        
+                        grid.appendChild(fileEl);
+                    });
+                    
+                    main.appendChild(grid);
+                } else {
+                    const list = document.createElement('div');
+                    list.className = 'file-list-view';
+                    
+                    Object.keys(folder.children).forEach(name => {
+                        const item = folder.children[name];
+                        const fileEl = document.createElement('div');
+                        fileEl.className = 'file-list-item';
+                        fileEl.dataset.name = name;
+                        
+                        const icon = item.type === 'folder' || item.type === 'drive' ? '📁' : '📄';
+                        
+                        fileEl.innerHTML = `
+                            <div class="file-list-icon">${icon}</div>
+                            <div class="file-list-details">
+                                <span style="flex:2">${name}</span>
+                                <span style="flex:1">${item.size || ''}</span>
+                                <span style="flex:1">${item.date || ''}</span>
+                            </div>
+                        `;
+                        
+                        fileEl.addEventListener('click', () => selectFile(fileEl, name,</title>
+</head>
+<body>
+
+</body>
+</html>

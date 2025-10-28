@@ -1,0 +1,337 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>Q-J-R - Home</title>-->
+<!--</head>-->
+<!--<body>-->
+
+<!--<h1>Q-J-R</h1>-->
+
+<!--<nav>-->
+<!--  -->
+<!--</nav>-->
+
+<!--</body>-->
+<!--</html>-->
+
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Q-J-R — Weather & Emergency Monitor</title>
+  <meta name="description" content="Q-J-R — інтегрована система моніторингу, логів та аварійної готовності" />
+  <style>
+    /* --------- Reset ---------- */
+    :root{
+      --bg:#0b0f14;
+      --panel:#0f1720;
+      --accent:#00ffd1;
+      --accent-2:#7b61ff;
+      --danger:#ff3b3b;
+      --muted:#9aa7b2;
+      --glass: rgba(255,255,255,0.03);
+      --glass-2: rgba(255,255,255,0.02);
+      --card-border: rgba(255,255,255,0.04);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      background:
+              radial-gradient(1200px 400px at 10% 10%, rgba(123,97,255,0.07), transparent 10%),
+              linear-gradient(180deg,#071019 0%, var(--bg) 50%);
+      color:#e6eef3;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      padding:24px;
+    }
+
+    /* ---------- Layout ---------- */
+    .container{
+      max-width:1200px;
+      margin:0 auto;
+      display:grid;
+      grid-template-columns: 1fr 380px;
+      gap:20px;
+      align-items:start;
+    }
+
+    header.site-header{
+      grid-column:1/-1;
+      display:flex;
+      gap:18px;
+      align-items:center;
+      margin-bottom:6px;
+    }
+    .logo{
+      width:72px;height:72px;
+      display:flex;align-items:center;justify-content:center;
+      background:linear-gradient(135deg,var(--accent),var(--accent-2));
+      border-radius:12px;
+      box-shadow:0 6px 18px rgba(123,97,255,0.12), inset 0 -4px 10px rgba(0,0,0,0.25);
+      font-weight:700;
+      color:#041018;
+      font-size:20px;
+      letter-spacing:1px;
+    }
+    .title {
+      display:flex;flex-direction:column;
+    }
+    .title h1{margin:0;font-size:20px}
+    .title p{margin:2px 0 0;font-size:13px;color:var(--muted)}
+
+    /* ---------- Main Panels ---------- */
+    main {
+      display:grid;
+      gap:16px;
+    }
+    .status-panel{
+      display:flex;
+      gap:14px;
+      align-items:stretch;
+    }
+    .card{
+      background:linear-gradient(180deg,var(--glass),var(--glass-2));
+      border:1px solid var(--card-border);
+      padding:16px;
+      border-radius:12px;
+      box-shadow: 0 6px 18px rgba(2,6,12,0.5);
+    }
+
+    .status{
+      flex:1;
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+    .status .indicator{
+      width:88px;height:88px;border-radius:12px;
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      background:linear-gradient(180deg,rgba(0,0,0,0.05),transparent);
+      border:1px solid rgba(255,255,255,0.03);
+    }
+    .indicator .big{
+      font-size:22px;font-weight:700;color:var(--danger);
+    }
+    .status .meta{flex:1}
+    .meta .line{font-size:13px;color:var(--muted);margin-bottom:6px}
+    .meta h2{margin:0;font-size:18px}
+
+    /* tools list */
+    .tools{
+      margin-top:8px;
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:8px;
+    }
+    .tool{
+      display:flex;gap:10px;padding:8px;border-radius:8px;background:rgba(255,255,255,0.02);align-items:center;
+      font-size:13px;
+    }
+    .tool .dot{width:10px;height:10px;border-radius:50%}
+    .tool .name{flex:1;color:#dbeaf0}
+
+    /* logs & map */
+    .workspace{
+      display:grid;
+      gap:12px;
+      margin-top:6px;
+    }
+    .map{
+      height:320px;border-radius:10px;overflow:hidden;
+      background:
+              linear-gradient(180deg, rgba(0,0,0,0.15), rgba(0,0,0,0.2)),
+              url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800"><rect width="100%" height="100%" fill="%230b0f14"/></svg>');
+      display:flex;align-items:center;justify-content:center;
+      color:var(--muted);font-size:14px;
+      position:relative;
+      border:1px solid rgba(255,255,255,0.03);
+    }
+
+    /* log viewer */
+    .log-window{
+      height:260px;overflow:auto;padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.03);
+      background:linear-gradient(180deg, rgba(0,0,0,0.04), rgba(255,255,255,0.01));
+      color:#cfeaf0;font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;font-size:12px;
+    }
+    .log-line{padding:6px 0;border-bottom:1px dashed rgba(255,255,255,0.02)}
+    .log-line .time{color:var(--muted);font-size:11px;margin-right:8px}
+    .log-line .msg{color:#e8fbff}
+
+    /* right column */
+    aside.right{
+      display:flex;flex-direction:column;gap:16px;
+      position:sticky;top:24px;
+    }
+    .panel-stats{display:grid;gap:10px}
+    .stat{
+      display:flex;justify-content:space-between;align-items:center;padding:12px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+      border:1px solid rgba(255,255,255,0.03)
+    }
+    .stat .label{color:var(--muted);font-size:13px}
+    .stat .value{font-weight:700;font-size:16px}
+
+    /* action row */
+    .actions{
+      display:flex;gap:10px;margin-top:8px;
+    }
+    .btn{
+      padding:10px 12px;border-radius:10px;border:none;cursor:pointer;font-weight:700;
+      color:#041018;background:linear-gradient(90deg,var(--accent),var(--accent-2));
+      box-shadow: 0 8px 18px rgba(123,97,255,0.12);
+    }
+    .btn.ghost{background:transparent;color:var(--accent);border:1px solid rgba(123,97,255,0.12);box-shadow:none}
+
+    footer{grid-column:1/-1;margin-top:18px;color:var(--muted);font-size:13px;display:flex;justify-content:space-between;align-items:center}
+
+    /* responsive */
+    @media(max-width:980px){
+      .container{grid-template-columns:1fr; padding:12px}
+      aside.right{position:static}
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <header class="site-header">
+    <div class="logo">QJR</div>
+    <div class="title">
+      <h1>Q-J-R — Emergency & Weather Monitor</h1>
+      <p>Система: QJRsphere · Alpha: Active · Вбудований лог, мережа і бекапи</p>
+    </div>
+    <div style="margin-left:auto;display:flex;gap:10px;align-items:center">
+      <div style="text-align:right">
+        <div style="font-size:12px;color:var(--muted)">Користувач</div>
+        <div style="font-weight:700">Admin2_Admin</div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- status -->
+    <section class="card status-panel">
+      <div class="status">
+        <div class="indicator card">
+          <!-- small svg -->
+          <svg width="56" height="56" viewBox="0 0 24 24" fill="none" style="filter:drop-shadow(0 6px 18px rgba(0,0,0,0.6))">
+            <defs>
+              <linearGradient id="g1" x1="0" x2="1">
+                <stop offset="0" stop-color="#00ffd1"/>
+                <stop offset="1" stop-color="#7b61ff"/>
+              </linearGradient>
+            </defs>
+            <rect x="0" y="0" width="24" height="24" rx="5" fill="url(#g1)"></rect>
+            <text x="12" y="16" font-size="10" font-weight="700" fill="#041018" text-anchor="middle">QJR</text>
+          </svg>
+          <div style="margin-top:8px;color:var(--muted);font-size:12px">DANGER</div>
+          <div class="big" style="margin-top:6px;color:var(--danger)">96%</div>
+        </div>
+
+        <div class="meta card">
+          <div class="line">Останній статус</div>
+          <h2>Emergency Standby — ACTIVE</h2>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px">
+            <div>
+              <div style="color:var(--muted);font-size:12px">Остання подія</div>
+              <div style="font-weight:700">Повітряна тривога — 2025-07-30 23:03</div>
+            </div>
+            <div style="text-align:right">
+              <div class="line" style="color:var(--muted)">Живлення</div>
+              <div style="font-weight:700">MacBook: 100%</div>
+            </div>
+          </div>
+
+          <div class="tools" style="margin-top:14px">
+            <div class="tool"><div class="dot" style="background:var(--accent)"></div><div class="name">QJRlog</div><div style="opacity:.7">100%</div></div>
+            <div class="tool"><div class="dot" style="background:#ffb86b"></div><div class="name">QJRweatherMonitor</div><div style="opacity:.7">Active</div></div>
+            <div class="tool"><div class="dot" style="background:#ff6b6b"></div><div class="name">QJRalarm</div><div style="opacity:.7">Active</div></div>
+            <div class="tool"><div class="dot" style="background:#9efcf7"></div><div class="name">QJRbackup</div><div style="opacity:.7">Ready</div></div>
+          </div>
+
+          <div class="actions" style="margin-top:12px">
+            <button class="btn">Create Backup</button>
+            <button class="btn ghost">Toggle Offline Mode</button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- workspace -->
+    <section class="workspace">
+      <div class="card">
+        <h3 style="margin:0 0 8px 0">Глобальна мапа · Алерти</h3>
+        <div class="map">
+          <div>
+            <strong>Map</strong>
+            <div style="color:var(--muted);font-size:13px">placeholder — інтегруй свій tile сервер або вбудуй iframe</div>
+          </div>
+          <!-- overlay badges -->
+          <div style="position:absolute;left:12px;top:12px;padding:8px;border-radius:8px;background:rgba(0,0,0,0.5);color:var(--muted);font-size:12px">
+            Q-J-R Network · Status: <strong style="color:#fff">Online</strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 style="margin:0 0 10px 0">System Log</h3>
+        <div class="log-window" id="logWindow" aria-live="polite">
+          <div class="log-line"><span class="time">[2025-07-31 23:03]</span><span class="msg">🔴 Повітряна тривога — 100% danger. QJRsphere LOCKED.</span></div>
+          <div class="log-line"><span class="time">[2025-07-30 19:35]</span><span class="msg">🔴 QJRalpha — CRITICAL OVERRIDE ENGAGED.</span></div>
+          <div class="log-line"><span class="time">[2025-07-20 18:03]</span><span class="msg">🌧️ Рекорд: Rain Level 70 detected — StormAlert active.</span></div>
+          <div class="log-line"><span class="time">[2025-07-20 23:12]</span><span class="msg">💾 QJRbackup_5.10.8_emergency_stable created (17GB).</span></div>
+          <div class="log-line"><span class="time">[2025-09-07 21:54]</span><span class="msg">🔴 Emergency Safe Transfer started (iPhone-XS, 4.6GB) — 1%.</span></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <aside class="right">
+    <div class="card panel-stats">
+      <div class="stat"><div class="label">QJR Version</div><div class="value">5.10.8</div></div>
+      <div class="stat"><div class="label">Alpha Status</div><div class="value" style="color:var(--danger)">CRITICAL</div></div>
+      <div class="stat"><div class="label">Network</div><div class="value">Online</div></div>
+      <div class="stat"><div class="label">Storage free</div><div class="value">320 GB</div></div>
+      <div class="stat"><div class="label">Last backup</div><div class="value">2025-07-30</div></div>
+    </div>
+
+    <div class="card">
+      <h3 style="margin:0 0 10px 0">Quick Actions</h3>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <button class="btn">Run Diagnostics</button>
+        <button class="btn ghost">Export Logs (JSON)</button>
+        <button class="btn">Activate Offline Mode</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3 style="margin:0 0 8px 0">Contacts</h3>
+      <div style="color:var(--muted);font-size:13px;margin-bottom:8px">Emergency Channel</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <div style="width:44px;height:44px;border-radius:10px;background:linear-gradient(180deg,#ff6b6b,#ffb86b);display:flex;align-items:center;justify-content:center;font-weight:700">HQ</div>
+        <div>
+          <div style="font-weight:700">QJR Command</div>
+          <div style="color:var(--muted);font-size:13px">radio@qjr.example</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <footer class="card">
+    <div>© Q-J-R System — Alpha · <span style="color:var(--muted)">Status snapshot: 2025-07-31</span></div>
+    <div style="display:flex;gap:12px;align-items:center">
+      <div style="font-size:12px;color:var(--muted)">Built with</div>
+      <div style="display:flex;gap:8px">
+        <div style="width:22px;height:22px;background:linear-gradient(90deg,#00ffd1,#7b61ff);border-radius:6px"></div>
+        <div style="width:22px;height:22px;background:#1b9cff;border-radius:6px"></div>
+      </div>
+    </div>
+  </footer>
+
+</div>
+</body>
+</html>
