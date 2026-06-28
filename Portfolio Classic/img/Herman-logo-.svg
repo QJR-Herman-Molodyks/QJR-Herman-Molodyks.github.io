@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.4 (e7c3feb1, 2024-10-09)"
+   sodipodi:docname="Herman-logo-.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     inkscape:zoom="0.28119058"
+     inkscape:cx="661.47308"
+     inkscape:cy="506.77373"
+     inkscape:window-width="1104"
+     inkscape:window-height="792"
+     inkscape:window-x="2110"
+     inkscape:window-y="116"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="Шар 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="fill:#f69000;fill-opacity:1;stroke:#c55811;stroke-width:0"
+       id="rect1"
+       width="160.21318"
+       height="53.733635"
+       x="29.084835"
+       y="128.90958" />
+  </g>
+  <text
+     xml:space="preserve"
+     style="font-size:50.6272px;text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#f69000;fill-opacity:1;stroke:#c55811;stroke-width:0"
+     x="38.530148"
+     y="155.70251"
+     id="text13"
+     inkscape:transform-center-x="96.408137"
+     inkscape:transform-center-y="-15.721581"
+     transform="scale(0.89825661,1.1132676)"><tspan
+       sodipodi:role="line"
+       id="tspan13"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:50.6272px;font-family:Consolas;-inkscape-font-specification:Consolas;fill:#f6ffff;fill-opacity:1;stroke-width:0"
+       x="38.530148"
+       y="155.70251">HERMAN</tspan></text>
+</svg>
